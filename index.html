@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aku Minta Maap</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(180deg, #0a0015 0%, #1a0a2e 40%, #2d1050 100%);
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            cursor: pointer;
+            overflow-x: hidden;
+        }
+
+        /* BINTANG */
+        .stars {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--dur) ease-in-out infinite;
+        }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(2); }
+        }
+
+        /* NYAMUK */
+        .mosquito {
+            position: fixed;
+            z-index: 5;
+            pointer-events: none;
+            font-size: 2em;
+            animation: flyIn 3s ease-out forwards;
+        }
+        @keyframes flyIn {
+            0% { top: -60px; left: 10%; transform: scale(0.3) rotate(0deg); opacity: 0; }
+            30% { top: 15%; left: 25%; transform: scale(0.6) rotate(-10deg); opacity: 1; }
+            60% { top: 30%; left: 45%; transform: scale(0.8) rotate(5deg); }
+            80% { top: 42%; left: 48%; transform: scale(1) rotate(-3deg); }
+            100% { top: 48%; left: 50%; transform: scale(1) rotate(0deg) translate(-50%, -50%); }
+        }
+
+        /* SURAT */
+        .envelope {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 240, 245, 0.95);
+            border-radius: 24px;
+            padding: 35px 25px 25px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(255, 100, 150, 0.2), 0 0 100px rgba(255, 100, 150, 0.1);
+            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) 3s both;
+            opacity: 0;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0) rotate(-10deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 25px solid transparent;
+            border-right: 25px solid transparent;
+            border-bottom: 25px solid #ff6b9d;
+            filter: drop-shadow(0 5px 10px rgba(255, 100, 150, 0.3));
+        }
+
+        .emoji-title {
+            font-size: 40px;
+            margin-bottom: 5px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .title {
+            color: #cc3355;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            font-style: italic;
+        }
+
+        .letter {
+            color: #442233;
+            font-size: 0.9em;
+            line-height: 1.9;
+            text-align: left;
+            padding: 18px;
+            background: rgba(255, 220, 230, 0.4);
+            border-radius: 16px;
+            border-left: 4px solid #ff6699;
+            max-height: 380px;
+            overflow-y: auto;
+        }
+
+        .signature {
+            color: #aa4466;
+            margin-top: 15px;
+            font-size: 0.85em;
+            font-style: italic;
+        }
+
+        .hint {
+            color: rgba(150, 100, 120, 0.6);
+            font-size: 0.7em;
+            margin-top: 15px;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* HATI TERBANG */
+        .hearts {
+            position: fixed;
+            pointer-events: none;
+            z-index: 15;
+            animation: floatUp linear forwards;
+            opacity: 0;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0); opacity: 1; }
+            100% { transform: translateY(-100vh) scale(1.8); opacity: 0; }
+        }
+
+        /* SPARKLE */
+        .sparkle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 15;
+            animation: sparklePop 0.8s ease-out forwards;
+        }
+        @keyframes sparklePop {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(2); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BINTANG -->
+    <div class="stars" id="starsContainer"></div>
+
+    <!-- NYAMUK -->
+    <div class="mosquito">🦟💌</div>
+
+    <!-- SURAT -->
+    <div class="envelope" id="envelope" onclick="efekHati(event)">
+        <div class="emoji-title">💌</div>
+        <div class="title">Aku Minta Maap</div>
+
+        <div class="letter">
+            Ehm anuu radaa canggungg hehee, emhh akuu mauu ngasihh tauu, akuu mintaa maapp bangett yahh udahh bikinn masalahh muluu kee kamuu yangg berujungg suasanaa jadii canggung.....<br><br>
+            Akuu mintaa maapp bangett yaa sayangg atass keegoisann akuu tadii siangg yangg gaa moodd nyaa malahh dii keluarinn kee kamuu harusnyaa gaa akuu keluarinn kee kamuu maapinn orangg cerobohh kekk akuu yaahh.<br><br>
+            Darii tadii soree akuu kepikirann soall inii muluu, gaa enakk rasanyaa udahh bikinn masalahh lagii, maappp bangett maapp, akuu ngetikk inii sambill mikirinn setiapp kataa dann kalimatt yangg sesuaii, tapii benerann inii akuu buatt dengann tuluss yaa walaupunn gaa baguss baguss amatt, maapp yaa cumaa beginii, segituu ajaa dehh buatt sekarangg, okyy goodd nightt myy girlfriendd 🤍🤍🤍🤍
+        </div>
+
+        <div class="signature">— dari aku yang nyesel banget 😔</div>
+        <div class="hint">✨ klik surat buat kirim hati ✨</div>
+    </div>
+
+    <script>
+        // ========== BINTANG ==========
+        function buatBintang() {
+            const container = document.getElementById('starsContainer');
+            for (let i = 0; i < 60; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 2 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.setProperty('--dur', (Math.random() * 3 + 2) + 's');
+                container.appendChild(star);
+            }
+        }
+        buatBintang();
+
+        // ========== EFEK KLIK ==========
+        function efekHati(event) {
+            // Hati terbang
+            const emotHati = ['💕', '💖', '💗', '💘', '💝', '🤍', '✨', '🩷', '💌', '🦟'];
+            for (let i = 0; i < 6; i++) {
+                const heart = document.createElement('span');
+                heart.className = 'hearts';
+                heart.textContent = emotHati[Math.floor(Math.random() * emotHati.length)];
+                heart.style.left = (event.clientX + (Math.random() - 0.5) * 70) + 'px';
+                heart.style.top = (event.clientY + (Math.random() - 0.5) * 50) + 'px';
+                heart.style.fontSize = (Math.random() * 22 + 10) + 'px';
+                heart.style.animationDuration = (Math.random() * 2.5 + 2) + 's';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 3000);
+            }
+
+            // Sparkle
+            const warnaSpark = ['#ff6b9d', '#ff99cc', '#ffd1e0', '#ffffff', '#ffccdd'];
+            for (let i = 0; i < 4; i++) {
+                const spark = document.createElement('span');
+                spark.className = 'sparkle';
+                spark.textContent = '✦';
+                spark.style.color = warnaSpark[Math.floor(Math.random() * warnaSpark.length)];
+                spark.style.left = (event.clientX + (Math.random() - 0.5) * 80) + 'px';
+                spark.style.top = (event.clientY + (Math.random() - 0.5) * 60) + 'px';
+                spark.style.fontSize = (Math.random() * 16 + 8) + 'px';
+                document.body.appendChild(spark);
+                setTimeout(() => spark.remove(), 800);
+            }
+        }
+    </script>
+</body>
+</html>
